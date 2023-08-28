@@ -34,5 +34,4 @@ python main.py /path/to/file.docx
 ## Future Roadmap
 
 - [ ] password protection removal for `.docx` files
-- [ ] `.doc` file support
 - [ ] `.pdf` file support
