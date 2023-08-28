@@ -1,6 +1,7 @@
 import zipfile
 import xml.etree.ElementTree as ET
 
+
 def extract_docx_metadata(docx_path):
     metadata = {}
 
@@ -20,34 +21,40 @@ def extract_docx_metadata(docx_path):
             }
 
             # title
-            extract_data_item(root, "dc:title", ns, metadata)
+            title = root.find("dc:title", ns)
+            add_data_to_obj(title, "title", metadata)
 
             # creator
-            extract_data_item(root, "dc:creator", ns, metadata)
+            creator = root.find("dc:creator", ns)
+            add_data_to_obj(creator, "creator", metadata)
 
             # keywords
-            extract_data_item(root, "ns0:keywords", ns, metadata)
+            keywords = root.find("ns0:keywords", ns)
+            add_data_to_obj(keywords, "keywords", metadata)
 
             # description
-            extract_data_item(root, "dc:description", ns, metadata)
+            description = root.find("dc:description", ns)
+            add_data_to_obj(description, "description", metadata)
 
             # lastModifiedBy
-            extract_data_item(root, "ns0:lastModifiedBy", ns, metadata)
+            last_modified_by = root.find("ns0:lastModifiedBy", ns)
+            add_data_to_obj(last_modified_by, "lastModifiedBy", metadata)
 
             # created
-            extract_data_item(root, "ns2:created", ns, metadata)
+            created = root.find("ns2:created", ns)
+            add_data_to_obj(created, "created", metadata)
 
             # modified
-            extract_data_item(root, "ns2:modified", ns, metadata)
+            modified = root.find("ns2:modified", ns)
+            add_data_to_obj(modified, "modified", metadata)
 
     return metadata
 
 
-def extract_data_item(root, item, ns, metadata):
-    data_item = root.find(item, ns)
-    name = item.split(":")[1]
-    if data_item is not None and data_item.text is not None:
-        metadata[name] = data_item.text
+# helper func to run the logic of getting an item from the XML
+def add_data_to_obj(item, name, metadata):
+    if item is not None and item.text is not None:
+        metadata[name] = item.text
     else:
         metadata[name] = ""
 
