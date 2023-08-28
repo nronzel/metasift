@@ -16,4 +16,5 @@ def main():
             print(f"{key}: {value}")
 
 
-main()
+if __name__ == "__main__":
+    main()
