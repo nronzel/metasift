@@ -8,8 +8,8 @@ def unlock_docx(docx_file):
     # Unzip the docx file
     temp_dir = "temp_docx"
     with zipfile.ZipFile(docx_file, "r") as zip_ref:
+        print("Unzipping .docx file...")
         zip_ref.extractall(temp_dir)
-    print("Unzipping .docx file...")
 
     # Modify settings.xml
     settings_path = os.path.join(temp_dir, "word", "settings.xml")
