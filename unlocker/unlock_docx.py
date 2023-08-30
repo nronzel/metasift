@@ -1,37 +1,37 @@
 import zipfile
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 import shutil
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
-def unlock_docx(docx_file):
-    # Unzip the docx file
-    temp_dir = "temp_docx"
+def unzip_docx(docx_file, temp_dir):
+    logging.info("Unzipping .docx file...")
     with zipfile.ZipFile(docx_file, "r") as zip_ref:
-        print("Unzipping .docx file...")
         zip_ref.extractall(temp_dir)
 
-    # Modify settings.xml
+
+def modify_settings(temp_dir):
+    logging.info("Parsing settings.xml...")
     settings_path = os.path.join(temp_dir, "word", "settings.xml")
-
-    print("Parsing settings.xml...")
-
     tree = ET.parse(settings_path)
     root = tree.getroot()
     ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
-    print("Checking for document protection...")
-
-    protec = root.find("w:documentProtection", ns)
-    if protec is not None:
-        print("Removing protection...")
-
-        root.remove(protec)
+    protections = root.findall(".//w:documentProtection", ns)
+    if protections:
+        logging.info("Found document protection. Removing...")
+        for protec in protections:
+            protec.getparent().remove(protec)
         tree.write(settings_path)
-    print("Protection successfully removed. Writing data to new file...")
+    else:
+        logging.info("No document protection found.")
 
-    # Zip files back into a new docx file
-    new_docx_file = "unlocked_" + docx_file
+
+def zip_new_docx(temp_dir, new_docx_file):
+    logging.info("Zipping new .docx file...")
     with zipfile.ZipFile(new_docx_file, "w", zipfile.ZIP_DEFLATED) as zipf:
         for root, _, files in os.walk(temp_dir):
             for file in files:
@@ -39,9 +39,22 @@ def unlock_docx(docx_file):
                     os.path.join(root, file),
                     os.path.relpath(os.path.join(root, file), temp_dir),
                 )
-    print("Write successful. Cleaning up...")
 
-    # Delete the temporary directory
+
+def cleanup(temp_dir):
+    logging.info("Cleaning up...")
     shutil.rmtree(temp_dir)
 
-    print(f"\nUnlocked document can be found at ./unlocked_{docx_file}")
+
+def unlock_docx(docx_file):
+    temp_dir = "temp_docx"
+    new_docx_file = "unlocked_" + docx_file
+
+    try:
+        unzip_docx(docx_file, temp_dir)
+        modify_settings(temp_dir)
+        zip_new_docx(temp_dir, new_docx_file)
+    finally:
+        cleanup(temp_dir)
+
+    logging.info(f"Unlocked document can be found at {new_docx_file}")
