@@ -18,6 +18,12 @@ Python 3.10.7
 ✅ - Remove password protection from `.docx` files <br />
 ✅ - _Coming Soon_ Batch processing <br />
 
+#### Password Protection Removal
+
+When removing passwords from `.docx` files, Metasift will not modify the original
+file in order to prevent any potential for corrupting the file. It will instead
+create a new `/unlocked-documents` directory where it will store the unlocked version.
+
 ## Quickstart
 
 ### Installation
