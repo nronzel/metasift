@@ -1,7 +1,7 @@
 import zipfile
 import shutil
 import os
-from lxml import etree as ET
+import xml.etree.ElementTree as ET
 
 
 class PasswordUnlocker:
@@ -13,7 +13,6 @@ class PasswordUnlocker:
         docx_file = self.doc
         # extract just the filename, in case it includes directories
         new_docx_file = "unlocked_" + docx_file.split(os.path.sep)[-1]
-        print("NEW DOCX FILE", new_docx_file)
         try:
             self._unzip_docx(docx_file, temp_dir)
             self._modify_settings(temp_dir)
@@ -42,11 +41,12 @@ class PasswordUnlocker:
             root = tree.getroot()
             ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
 
-            protections = root.findall(".//w:documentProtection", ns)
-            if protections:
+            # Find the documentProtection element
+            doc_protection = root.find(".//w:documentProtection", ns)
+
+            if doc_protection is not None:
                 print("Found document protection. Removing...")
-                for protec in protections:
-                    protec.getparent().remove(protec)
+                root.remove(doc_protection)
                 tree.write(settings_path)
                 print("Document protection removed.\n")
             else:
