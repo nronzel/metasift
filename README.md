@@ -1,7 +1,8 @@
+![ascii-screenshot](./screenshot.png)
+
 # Metasift
 
 Metasift is a metadata extraction tool.
-
 
 Python 3.10.7
 
