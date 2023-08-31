@@ -1,5 +1,9 @@
 # Metasift
 
+> Currently in middle of rewriting this to use classes as it started to
+> get a little messy with the features I have planned. May not be working
+> properly until I get more of the logic translated over.
+
 Metasift is a metadata extraction tool.
 
 Currently only supports `.docx` files, with more to come.
@@ -22,16 +26,16 @@ cd metasift
 
 ### Usage
 
-Run Metasift by providing a file path.
-
-> This will soon be updated to take a directory and it will scan the directory
-> for supported filed.
+Run Metasift by running the `main.py` file:
 
 ```bash
-python main.py /path/to/file.docx
+python main.py
 ```
 
 ## Future Roadmap
 
-- [ ] password protection removal for `.docx` files
+- [ ] ~~password protection removal for `.docx` files~~
 - [ ] `.pdf` file support
+- [ ] directory support
+- [ ] EXIF data support
+- [ ] Metadata cleaning feature
