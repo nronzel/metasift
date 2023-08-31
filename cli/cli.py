@@ -16,11 +16,14 @@ class CLI:
     def draw_menu(self, title, options):
         print(f"\n=== {title} ===\n")
         for key, val in options.items():
-            print(f"{key}. {val['text']}")
+            if val["text"] == "Main Menu":
+                print(f"\n{key}. {val['text']}")
+            else:
+                print(f"{key}. {val['text']}")
         print("\nq. Quit\n")
 
     def handle_choice(self, options):
-        choice = input("Enter your choice: ")
+        choice = input("Make a selection: ")
         action = options.get(choice, {}).get("action")
         if action:
             action()
@@ -37,7 +40,7 @@ class CLI:
                 "action": self.set_action_and_goto_file_selection("extract_metadata"),
             },
             "2": {
-                "text": "Clean metadata",
+                "text": "Clean metadata *coming soon",
                 "action": self.set_action_and_goto_file_selection("clean_metadata"),
             },
             "3": {
