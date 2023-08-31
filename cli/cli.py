@@ -127,9 +127,8 @@ class CLI:
 
         by: nronzel
 
-        view the project at https://github.com/nronzel/metasift
-
-        If you run into any bugs please submit an issue at the Github above
-        and I will look into it.
-                      """
+        If you run into any issues, bugs, or have a feature request, please
+        submit an issue at https://github.com/nronzel/metasift/issues and I
+        will take a look.
+             """
         )
