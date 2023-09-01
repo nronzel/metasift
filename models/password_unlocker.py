@@ -77,7 +77,9 @@ class PasswordUnlocker:
 
         try:
             print(f"Creating New Document: {new_docx_file}...")
-            with zipfile.ZipFile(new_docx_file_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+            with zipfile.ZipFile(
+                new_docx_file_path, "w", compression=zipfile.ZIP_DEFLATED
+            ) as zipf:
                 for root, _, files in os.walk(temp_dir):
                     for file in files:
                         file_path = os.path.join(root, file)
