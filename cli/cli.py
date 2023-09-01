@@ -84,7 +84,10 @@ class CLI:
             return
         print("\n")
         for key, val in data.items():
-            print(f"{key}: {val}")
+            print(f"{key}:")
+            for subkey, subval in val.items():
+                print(f"    {subkey}: {subval}")
+            print("\n")
 
     def get_and_check_input(self):
         while True:
@@ -99,13 +102,12 @@ class CLI:
                 self.document = Document(path)
                 self.document.set_type("filename")
                 break
-            else:
-                print("\nInvalid or unsupported file provided. Try again.\n")
-
-            if is_valid_directory:
+            elif is_valid_directory:
                 self.document = Document(path)
                 self.document.set_type("directory")
                 break
+            else:
+                print("\nInvalid or unsupported file provided. Try again.\n")
 
     def quit(self):
         self._clear_console()
