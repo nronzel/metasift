@@ -130,11 +130,11 @@ class CLI:
     def _ascii_logo(self, intro=False):
         additional_text = (
             """
-        by: nronzel
+    by: nronzel
 
-        Please submit any bugs, issues, or feature requests to:
-        https://github.com/nronzel/metasift/issues
-            """
+    Please submit any bugs, issues, or feature requests to:
+    https://github.com/nronzel/metasift/issues
+    """
             if intro
             else ""
         )
