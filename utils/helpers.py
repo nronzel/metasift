@@ -3,6 +3,7 @@ import os
 
 
 def is_valid_filename(text):
+    text = text.strip()
     pattern = r".*\.[a-zA-Z]{3,4}$"
     return bool(re.match(pattern, text))
 
