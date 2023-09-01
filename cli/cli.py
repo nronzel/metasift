@@ -14,13 +14,22 @@ class CLI:
         self.action = None
 
     def draw_menu(self, title, options):
-        print(f"\n=== {title} ===\n")
+        max_len = max(
+            len(f"{key}. {val['text']}") for key, val in options.items()
+        )  # Calculate max length based on key and value
+        border_line = "+" + "-" * (max_len + 4) + "+"
+
+        print("\n" + border_line)
+        print(f"|  {title.center(max_len)}  |")
+        print("|" + " " * (max_len + 4) + "|")
+
         for key, val in options.items():
-            if val["text"] == "Main Menu":
-                print(f"\n{key}. {val['text']}")
-            else:
-                print(f"{key}. {val['text']}")
-        print("\nq. Quit\n")
+            menu_item = f"{key}. {val['text']}"
+            print(f"|  {menu_item.ljust(max_len)}  |")
+
+        print("|" + " " * (max_len + 4) + "|")
+        print(f"|  {'q. Quit'.ljust(max_len)}  |")
+        print(border_line + "\n")
 
     def handle_choice(self, options):
         choice = input("Make a selection: ")
