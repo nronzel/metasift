@@ -4,7 +4,7 @@ from utils.helpers import is_valid_filename, is_supported_filetype
 
 # Helpers
 class TestHelpers(unittest.TestCase):
-    def test_filename_or_directory(self):
+    def test_valid_filenames(self):
         values = [
             "test.docx",
             "test.pdf",
@@ -16,7 +16,7 @@ class TestHelpers(unittest.TestCase):
             result = is_valid_filename(value)
             self.assertTrue(result, f"Expected {value} to be True")
 
-    def test_bad_filename_or_directory(self):
+    def test_invalid_filenames(self):
         values = [
             "test.py",
             "test.js",
