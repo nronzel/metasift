@@ -4,10 +4,13 @@ from utils.helpers import is_supported_filetype, is_valid_filename
 
 import os
 
+RED = "\033[91m"
+GREEN = "\033[92m"
+RESET = "\033[0m"
+
 
 class State(Enum):
     MAIN_MENU = auto()
-    FILETYPE_SELECTION = auto()
 
 
 class CLI:
@@ -84,10 +87,15 @@ class CLI:
             return
         print("\n")
         for key, val in data.items():
-            print(f"{key}:")
-            for subkey, subval in val.items():
-                print(f"    {subkey}: {subval}")
-            print("\n")
+            color = GREEN if val else RED
+            print(f"{color}{key}{RESET}:")
+            if isinstance(val, dict):
+                for subkey, subval in val.items():
+                    color = GREEN if subval else RED
+                    print(f"    {color}{subkey}{RESET}: {subval}")
+                print("\n")
+            else:
+                print(f"    {val}")
 
     def get_and_check_input(self):
         while True:
