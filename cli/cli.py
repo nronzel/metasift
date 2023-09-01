@@ -110,12 +110,12 @@ class CLI:
     def quit(self):
         self._clear_console()
         print("\nThanks for using")
-        self._outro()
+        self._ascii_logo()
         print("\nGoodbye!")
         exit(0)
 
     def run(self):
-        self._intro()
+        self._ascii_logo(True)
         while True:
             self.draw_main_menu()
 
@@ -127,32 +127,25 @@ class CLI:
             # DOS/Windows
             os.system("cls")
 
-    def _intro(self):
-        print(
+    def _ascii_logo(self, intro=False):
+        additional_text = (
             """
-                   _                      ___  _
-    /'\\_/`\\       ( )_               _  /'___)( )_
-    |     |   __  | ,_)   _ _   ___ (_)| (__  | ,_)
-    | (_) | /'__`\\| |   /'_` )/',__)| || ,__) | |
-    | | | |(  ___/| |_ ( (_| |\\__, \\| || |    | |_
-    (_) (_)`\\____)`\\__)`\\__,_)(____/(_)(_)    `\\__)
+        by: nronzel
 
-      by: nronzel
-
-    Please submit any bugs, issues, or feature requests to:
-    https://github.com/nronzel/metasift/issues
-"""
+        Please submit any bugs, issues, or feature requests to:
+        https://github.com/nronzel/metasift/issues
+            """
+            if intro
+            else ""
         )
-
-    def _outro(self):
         print(
-            """
+            f"""
                    _                      ___  _
     /'\\_/`\\       ( )_               _  /'___)( )_
     |     |   __  | ,_)   _ _   ___ (_)| (__  | ,_)
     | (_) | /'__`\\| |   /'_` )/',__)| || ,__) | |
     | | | |(  ___/| |_ ( (_| |\\__, \\| || |    | |_
     (_) (_)`\\____)`\\__)`\\__,_)(____/(_)(_)    `\\__)
-
-"""
+    {additional_text}
+    """
         )
