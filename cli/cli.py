@@ -19,7 +19,7 @@ class CLI:
         self.state = State.MAIN_MENU
         self.action = None
 
-    def draw_menu(self, title, options):
+    def _draw_menu(self, title, options):
         max_len = max(
             len(f"{key}. {val['text']}") for key, val in options.items()
         )  # Calculate max length based on key and value
@@ -37,51 +37,54 @@ class CLI:
         print(f"|  {'q. Quit'.ljust(max_len)}  |")
         print(border_line + "\n")
 
-    def handle_choice(self, options):
+    def _handle_choice(self, options):
         choice = input("Make a selection: ")
         action = options.get(choice, {}).get("action")
         if action:
             action()
         elif choice == "q":
-            self.quit()
+            self._quit()
         else:
             print(f"\n{choice} is not a valid option")
 
-    def draw_main_menu(self):
+    def _draw_main_menu(self):
         self.state = State.MAIN_MENU
         options = {
-            "1": {"text": "Extract metadata", "action": self.extract_metadata},
-            "2": {"text": "Clean metadata *coming soon", "action": self.clean_metadata},
+            "1": {"text": "Extract metadata", "action": self._extract_metadata},
+            "2": {
+                "text": "Clean metadata *coming soon",
+                "action": self._clean_metadata,
+            },
             "3": {
                 "text": "Remove password protection (.docx only)",
-                "action": self.unlock_docx,
+                "action": self._unlock_docx,
             },
         }
-        self.draw_menu("Main Menu", options)
-        self.handle_choice(options)
+        self._draw_menu("Main Menu", options)
+        self._handle_choice(options)
 
-    def extract_metadata(self):
+    def _extract_metadata(self):
         self._clear_console()
-        self.get_and_check_input()
+        self._get_and_check_input()
         if self.document is not None:
             data = self.document.extract_metadata()
-            self.print_metadata(data)
+            self._print_metadata(data)
             return data
         else:
             print("\nError: document is None")
 
-    def clean_metadata(self):
+    def _clean_metadata(self):
         pass
 
-    def unlock_docx(self):
+    def _unlock_docx(self):
         self._clear_console()
-        self.get_and_check_input()
+        self._get_and_check_input()
         if self.document is not None:
             self.document.remove_password()
         else:
             print("\nError: document is None")
 
-    def print_metadata(self, data):
+    def _print_metadata(self, data):
         if data is None:
             print("\nNo data supplied to metadata printer.")
             return
@@ -97,11 +100,11 @@ class CLI:
             else:
                 print(f"    {val}")
 
-    def get_and_check_input(self):
+    def _get_and_check_input(self):
         while True:
             path = input("Please provide a path or a filename: ")
             if path.lower() in ["exit", "quit", "q"]:
-                self.quit()
+                self._quit()
 
             is_file = is_valid_filename(path)
             is_valid_directory = os.path.isdir(path)
@@ -117,7 +120,7 @@ class CLI:
             else:
                 print("\nInvalid or unsupported file provided. Try again.\n")
 
-    def quit(self):
+    def _quit(self):
         self._clear_console()
         print("\nThanks for using")
         self._ascii_logo()
@@ -127,7 +130,7 @@ class CLI:
     def run(self):
         self._ascii_logo(True)
         while True:
-            self.draw_main_menu()
+            self._draw_main_menu()
 
     def _clear_console(self):
         if os.name == "posix":
