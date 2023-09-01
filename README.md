@@ -4,7 +4,7 @@
 
 Metasift is a metadata extraction tool.
 
-Python 3.10.7
+Python v3.10.7
 
 > LIMITED FEATURES: This app currently has limited features and only supports
 > `.docx` files at the moment. It will be expanded in the future to include
