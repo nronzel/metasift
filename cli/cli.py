@@ -1,5 +1,8 @@
 from document.document import Document
 from enum import Enum, auto
+from utils.helpers import is_supported_filetype, is_valid_filename
+
+import os
 
 
 class State(Enum):
@@ -55,25 +58,52 @@ class CLI:
         self.handle_choice(options)
 
     def extract_metadata(self):
-        self.document = Document()
-        data = self.document.extract_metadata()
-        self.print_metadata(data)
-        return data
+        self.get_and_check_input()
+        if self.document is not None:
+            data = self.document.extract_metadata()
+            self.print_metadata(data)
+            return data
+        else:
+            print("Error: document is None")
 
     def clean_metadata(self):
         pass
 
     def unlock_docx(self):
-        self.document = Document()
-        self.document.remove_password()
+        self.get_and_check_input()
+        if self.document is not None:
+            self.document.remove_password()
+        else:
+            print("Error: document is None")
 
     def print_metadata(self, data):
         if data is None:
-            print("data was None")
+            print("No data supplied to metadata printer.")
             return
         print("\n")
         for key, val in data.items():
             print(f"{key}: {val}")
+
+    def get_and_check_input(self):
+        while True:
+            path = input("Please provide a path or a filename: ")
+            if path.lower() in ["exit", "quit", "q"]:
+                self.quit()
+
+            is_file = is_valid_filename(path)
+            is_valid_directory = os.path.isdir(path)
+
+            if is_file and is_supported_filetype(path):
+                self.document = Document(path)
+                self.document.set_type("filename")
+                break
+            else:
+                print("Invalid or unsupported file provided. Try again.")
+
+            if is_valid_directory:
+                self.document = Document(path)
+                self.document.set_type("directory")
+                break
 
     def quit(self):
         print("\nThanks for using Metasift. Goodbye!")
