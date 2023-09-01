@@ -45,39 +45,6 @@ class CLI:
         self.draw_menu("Main Menu", options)
         self.handle_choice(options)
 
-    # def set_action_and_goto_file_selection(self, action):
-    #     def wrapper():
-    #         self.action = action
-    #         self.goto_filetype_selection()
-    #
-    #     return wrapper
-
-    # def perform_unlock_docx(self):
-    #     self.action = "remove_password"
-    #     self.perform_action()
-    #
-    # def goto_filetype_selection(self):
-    #     self.state = State.FILETYPE_SELECTION
-    #     self.draw_filetype_selection_menu()
-
-    # def draw_filetype_selection_menu(self):
-    #     options = {
-    #         "1": {"text": ".docx", "action": self.perform_action},
-    #         "2": {"text": ".pdf (*coming soon)", "action": None},
-    #         "3": {"text": ".jpg or .png (*coming soon)", "action": None},
-    #         "4": {"text": "Main Menu", "action": self.draw_main_menu},
-    #     }
-    #     self.draw_menu("Filetype", options)
-    #     self.handle_choice(options)
-
-    # def perform_action(self):
-    #     if self.action == "extract_metadata":
-    #         self.extract_metadata()
-    #     elif self.action == "clean_metadata":
-    #         self.clean_metadata()
-    #     elif self.action == "remove_password":
-    #         self.unlock_docx()
-
     def extract_metadata(self):
         self.document = Document()
         data = self.document.extract_metadata()
