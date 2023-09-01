@@ -94,10 +94,9 @@ class CLI:
     | | | |(  ___/| |_ ( (_| |\\__, \\| || |    | |_
     (_) (_)`\\____)`\\__)`\\__,_)(____/(_)(_)    `\\__)
 
-        by: nronzel
+      by: nronzel
 
-        If you run into any issues, bugs, or have a feature request, please
-        submit an issue at https://github.com/nronzel/metasift/issues and I
-        will take a look.
-             """
+    Please submit any bugs, issues, or feature requests to:
+    https://github.com/nronzel/metasift/issues
+"""
         )
