@@ -4,15 +4,7 @@ import os
 
 def is_valid_filename(text):
     pattern = r".*\.[a-zA-Z]{3,4}$"
-    file = bool(re.match(pattern, text))
-    if file:
-        is_supported = is_supported_filetype(text)
-        if not is_supported:
-            print("Filetype not supported, please try again.")
-        else:
-            return True
-    else:
-        return False
+    return bool(re.match(pattern, text))
 
 
 def is_supported_filetype(text):
