@@ -5,12 +5,7 @@ from utils.helpers import is_valid_filename, is_supported_filetype
 # Helpers
 class TestHelpers(unittest.TestCase):
     def test_valid_filenames(self):
-        values = [
-            "test.docx",
-            "test.pdf",
-            "test.jpg",
-            "test.png",
-        ]
+        values = ["test.docx", "test.pdf", "test.jpg", "test.png", "/tests/test.docx"]
 
         for value in values:
             result = is_valid_filename(value)
