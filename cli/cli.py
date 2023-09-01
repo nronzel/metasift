@@ -58,27 +58,29 @@ class CLI:
         self.handle_choice(options)
 
     def extract_metadata(self):
+        self._clear_console()
         self.get_and_check_input()
         if self.document is not None:
             data = self.document.extract_metadata()
             self.print_metadata(data)
             return data
         else:
-            print("Error: document is None")
+            print("\nError: document is None")
 
     def clean_metadata(self):
         pass
 
     def unlock_docx(self):
+        self._clear_console()
         self.get_and_check_input()
         if self.document is not None:
             self.document.remove_password()
         else:
-            print("Error: document is None")
+            print("\nError: document is None")
 
     def print_metadata(self, data):
         if data is None:
-            print("No data supplied to metadata printer.")
+            print("\nNo data supplied to metadata printer.")
             return
         print("\n")
         for key, val in data.items():
@@ -98,7 +100,7 @@ class CLI:
                 self.document.set_type("filename")
                 break
             else:
-                print("Invalid or unsupported file provided. Try again.")
+                print("\nInvalid or unsupported file provided. Try again.\n")
 
             if is_valid_directory:
                 self.document = Document(path)
@@ -106,15 +108,26 @@ class CLI:
                 break
 
     def quit(self):
-        print("\nThanks for using Metasift. Goodbye!")
+        self._clear_console()
+        print("\nThanks for using")
+        self._outro()
+        print("\nGoodbye!")
         exit(0)
 
     def run(self):
-        self.intro()
+        self._intro()
         while True:
             self.draw_main_menu()
 
-    def intro(self):
+    def _clear_console(self):
+        if os.name == "posix":
+            # Unix/Linux/MacOs/BSD/etc..
+            os.system("clear")
+        elif os.name in ("nt", "dos", "ce"):
+            # DOS/Windows
+            os.system("cls")
+
+    def _intro(self):
         print(
             """
                    _                      ___  _
@@ -128,5 +141,18 @@ class CLI:
 
     Please submit any bugs, issues, or feature requests to:
     https://github.com/nronzel/metasift/issues
+"""
+        )
+
+    def _outro(self):
+        print(
+            """
+                   _                      ___  _
+    /'\\_/`\\       ( )_               _  /'___)( )_
+    |     |   __  | ,_)   _ _   ___ (_)| (__  | ,_)
+    | (_) | /'__`\\| |   /'_` )/',__)| || ,__) | |
+    | | | |(  ___/| |_ ( (_| |\\__, \\| || |    | |_
+    (_) (_)`\\____)`\\__)`\\__,_)(____/(_)(_)    `\\__)
+
 """
         )
