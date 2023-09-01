@@ -12,7 +12,7 @@ class Document:
 
     def extract_metadata(self):
         metadata_extractor = MetadataExtractor(self.path)
-        if self.type == "filepath":
+        if self.type == "filename":
             return metadata_extractor.extract()
         elif self.type == "directory":
             return self._extract_directory_metadata()
