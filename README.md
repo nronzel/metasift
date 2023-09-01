@@ -2,27 +2,28 @@
 
 # Metasift
 
-Metasift is a metadata extraction tool.
+Metasift is a metadata extraction tool, and `.docx` password protection remover.
+
+Soon to have support for cleaning metadata.
 
 Python v3.10.7
 
 > LIMITED FEATURES: This app currently has limited features and only supports
 > `.docx` files at the moment. It will be expanded in the future to include
-> more filetypes. My current focus is on getting batch processing implemented,
-> and then working on cleaning metadata for `.docx` files before moving onto
-> other filetypes.
+> more filetypes. My current focus is on implementing `.docx` metadata cleaning.
 
 ## Features
 
 ✅ - Extract metadata from `.docx` files <br />
 ✅ - Remove password protection from `.docx` files <br />
-✅ - _Coming Soon_ Batch processing <br />
+✅ - Batch processing <br />
 
 #### Password Protection Removal
 
 When removing passwords from `.docx` files, Metasift will not modify the original
 file in order to prevent any potential for corruption. It will instead
-create a new `/unlocked-documents` directory where it will store the unlocked version.
+create a new `/unlocked-documents` directory where it will store a separate
+unlocked version.
 
 ## Quickstart
 
@@ -58,12 +59,49 @@ or
 python3 main.py
 ```
 
+#### Input
+
+Metasift accepts either a filename:
+
+```bash
+test.docx
+```
+
+or a directory path (relative or absolute):
+
+```bash
+.
+./
+/path/to/directory
+```
+
+If a directory path is supplied, it will crawl that directory only without going
+into subfolders, and get all of the supported filetypes and attempt to extract the
+metadata.
+
+## Compatability
+
+This program was built and tested on Linux. It should work on any POSIX based
+systems such as Unix, Linux, MacOS, BSD, etc.
+
+I have added some logic for checking for windows filepaths, however I have not
+tested it on a Windows machine to verify everything works.
+
+## Testing
+
+You can run the provided unit tests with:
+
+```bash
+python tests.py -v
+```
+
 ## Future Roadmap
 
 - [x] ~~re-write to use classes for better maintainability~~
 - [x] ~~password protection removal for `.docx` files~~
-- [ ] directory support for batch processing _coming soon_
+- [x] ~~directory support for batch processing~~
+- [ ] `.docx` metadata cleaning
 - [ ] `.pdf` file support
 - [ ] Option to export metadata to CSV
 - [ ] EXIF data support
-- [ ] Metadata cleaning feature
+- [ ] Metadata cleaning of other filetypes as implemented
