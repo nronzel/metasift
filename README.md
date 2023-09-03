@@ -85,7 +85,9 @@ This program was built and tested on Linux. It should work on any POSIX based
 systems such as Unix, Linux, MacOS, BSD, etc.
 
 I have added some logic for checking for Windows filepaths, however I have not
-tested it on a Windows machine to verify everything works.
+tested it on a Windows machine to verify everything works. There may also be
+issues with the ANSI color codes in your terminal on Windows as I believe ANSI
+codes are disabled by default.
 
 ## Testing
 
