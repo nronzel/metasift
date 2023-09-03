@@ -12,6 +12,11 @@ GREEN = "\033[92m"
 RESET = "\033[0m"
 
 
+# State machine used for future expansion of menu system.
+# To expand:
+# Add new value to State enum
+# Add new method to handle that state
+# Add entry to self.state_handlers that maps state to method
 class State(Enum):
     MAIN_MENU = auto()
 
@@ -20,11 +25,14 @@ class CLI:
     def __init__(self):
         self.document = None
         self.state = State.MAIN_MENU
+        self.state_handlers = {
+            State.MAIN_MENU: self._handle_main_menu_state,
+        }
         self.menu_drawer = MenuDrawer()
         self.input_handler = InputHandler()
         self.document_action = None
 
-    def _draw_main_menu(self):
+    def _handle_main_menu_state(self):
         self.state = State.MAIN_MENU
         options = {
             "1": {"text": "Extract metadata", "action": self._extract_metadata},
@@ -106,7 +114,12 @@ class CLI:
     def run(self):
         self._ascii_logo(True)
         while True:
-            self._draw_main_menu()
+            state_handler = self.state_handlers.get(self.state)
+            if state_handler:
+                state_handler()
+            else:
+                print("Invalid state")
+                self._quit()
 
     def _clear_console(self):
         if os.name == "posix":
