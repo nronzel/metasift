@@ -1,5 +1,4 @@
 import re
-import os
 
 
 def is_valid_filename(text):
@@ -8,13 +7,11 @@ def is_valid_filename(text):
 
 
 def is_supported_filetype(text):
-    supported_extensions = [
+    supported_filetypes = {
         ".docx",
         ".pdf",
         ".jpg",
         ".png",
-    ]
-    _, extension = os.path.splitext(text.strip())
-    if extension.lower() in supported_extensions:
-        return True
-    return False
+    }
+    text = text.strip().lower()
+    return any(text.endswith(ext) for ext in supported_filetypes)
