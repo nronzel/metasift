@@ -5,6 +5,10 @@ import xml.etree.ElementTree as ET
 
 
 class PasswordUnlocker:
+    """
+    Removes password protection from .docx files.
+    """
+
     def __init__(self, doc):
         self.doc = doc
 
