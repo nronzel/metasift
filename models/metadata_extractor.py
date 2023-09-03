@@ -1,7 +1,7 @@
-import zipfile
 import os
-import xml.etree.ElementTree as ET
 
+from utils.file_handler import FileHandler
+from utils.xml_extractor import XMLExtractor
 from .extractor import Extractor
 
 
@@ -17,41 +17,26 @@ class MetadataExtractor(Extractor):
 
     def _extract_from_file(self, file_path):
         metadata = {}
+        xml_data = FileHandler.read_zip_file(file_path, "docProps/core.xml")
 
-        with zipfile.ZipFile(file_path, "r") as z:
-            if "docProps/core.xml" not in z.namelist():
-                raise Exception("core.xml not found")
+        if xml_data is None:
+            return metadata
 
-            with z.open("docProps/core.xml") as f:
-                tree = ET.parse(f)
-                root = tree.getroot()
+        namespaces = {
+            "ns0": "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
+            "dc": "http://purl.org/dc/elements/1.1/",
+            "ns2": "http://purl.org/dc/terms/",
+        }
 
-            ns = {
-                "ns0": "http://schemas.openxmlformats.org/package/2006/metadata/core-properties",
-                "dc": "http://purl.org/dc/elements/1.1/",
-                "ns2": "http://purl.org/dc/terms/",
-            }
+        extractor = XMLExtractor(xml_data, namespaces)
 
-            title = root.find("dc:title", ns)
-            self._add_data_to_obj(title, "title", metadata)
-
-            creator = root.find("dc:creator", ns)
-            self._add_data_to_obj(creator, "creator", metadata)
-
-            keywords = root.find("ns0:keywords", ns)
-            self._add_data_to_obj(keywords, "keywords", metadata)
-
-            description = root.find("dc:description", ns)
-            self._add_data_to_obj(description, "description", metadata)
-
-            last_modified_by = root.find("ns0:lastModifiedBy", ns)
-            self._add_data_to_obj(last_modified_by, "lastModifiedBy", metadata)
-
-            created = root.find("ns2:created", ns)
-            self._add_data_to_obj(created, "created", metadata)
-
-            modified = root.find("ns2:modified", ns)
-            self._add_data_to_obj(modified, "modified", metadata)
+        metadata["title"] = extractor.extract_value("dc:title")
+        metadata["creator"] = extractor.extract_value("dc:creator")
+        metadata["keywords"] = extractor.extract_value("ns0:keywords")
+        metadata["description"] = extractor.extract_value("dc:description")
+        metadata["lastModifiedBy"] = extractor.extract_value("ns0:lastModifiedBy")
+        metadata["created"] = extractor.extract_value("ns2:created")
+        metadata["modified"] = extractor.extract_value("ns2:modified")
 
         return metadata
 
@@ -62,13 +47,4 @@ class MetadataExtractor(Extractor):
                 if file.endswith(".docx"):
                     filepath = os.path.join(root, file)
                     metadata[file] = self._extract_from_file(filepath)
-        return metadata
-
-    @staticmethod
-    def _add_data_to_obj(item, name, metadata):
-        if item is not None and item.text is not None:
-            metadata[name] = item.text
-        else:
-            metadata[name] = ""
-
         return metadata

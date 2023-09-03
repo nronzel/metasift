@@ -26,3 +26,15 @@ class FileHandler:
         except Exception as e:
             print(f"Failed to create new document. Error: {e}")
             return False
+
+    @staticmethod
+    def read_zip_file(src, filename):
+        try:
+            with zipfile.ZipFile(src, "r") as z:
+                if filename not in z.namelist():
+                    raise Exception(f"\n{filename} not found")
+                with z.open(filename) as f:
+                    return f.read()
+        except Exception as e:
+            print(f"\nFailed to read {filename} from {src}. Error: {e}")
+            return None
