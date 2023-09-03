@@ -1,6 +1,6 @@
 import os
 
-from utils.helpers import is_supported_filetype
+from .helpers import is_supported_filetype
 
 
 class FileCrawler:
