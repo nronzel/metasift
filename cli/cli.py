@@ -79,14 +79,15 @@ class CLI:
         print("\n")
         for key, val in data.items():
             color = Color.GREEN.value if val else Color.RED.value
-            print(f"{color}{key}{Color.RESET.value}:")
+
             if isinstance(val, dict):
+                print(f"{color}{key}{Color.RESET.value}:")
                 for subkey, subval in val.items():
                     color = Color.GREEN.value if subval else Color.RED.value
                     print(f"    {color}{subkey}{Color.RESET.value}: {subval}")
                 print("\n")
             else:
-                print(f"    {val}")
+                print(f"{color}{key}{Color.RESET.value}: {val}")
 
     def _get_and_check_input(self):
         while True:
