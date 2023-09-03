@@ -5,7 +5,7 @@ from utils.xml_extractor import XMLExtractor
 from .extractor import Extractor
 
 
-class MetadataExtractor(Extractor):
+class DOCXMetadataExtractor(Extractor):
     def __init__(self, path):
         self.path = path
 

@@ -1,4 +1,4 @@
-from models.metadata_extractor import MetadataExtractor
+from models.metadata_extractor import DOCXMetadataExtractor
 from models.password_unlocker import PasswordUnlocker
 
 
@@ -6,7 +6,7 @@ class Document:
     def __init__(self, path):
         self.path = path
         self.type = None
-        self.metadata_extractor = MetadataExtractor(self.path)
+        self.metadata_extractor = DOCXMetadataExtractor(self.path)
         self.password_unlocker = PasswordUnlocker(self.path)
 
     def extract_metadata(self):
