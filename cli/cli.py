@@ -7,12 +7,16 @@ from .document_action import DocumentAction
 
 import os
 
-RED = "\033[91m"
-GREEN = "\033[92m"
-RESET = "\033[0m"
+
+# ANSI colors for console output
+class Color(Enum):
+    RED = "\033[0;31m"
+    GREEN = "\033[0;32m"
+    YELLOW = "\033[0;33m"
+    RESET = "\033[0m"
 
 
-# State machine used for future expansion of menu system.
+# State machine pattern used for future expansion of menu system.
 # To expand:
 # Add new value to State enum
 # Add new method to handle that state
@@ -74,12 +78,12 @@ class CLI:
             return
         print("\n")
         for key, val in data.items():
-            color = GREEN if val else RED
-            print(f"{color}{key}{RESET}:")
+            color = Color.GREEN.value if val else Color.RED.value
+            print(f"{color}{key}{Color.RESET.value}:")
             if isinstance(val, dict):
                 for subkey, subval in val.items():
-                    color = GREEN if subval else RED
-                    print(f"    {color}{subkey}{RESET}: {subval}")
+                    color = Color.GREEN.value if subval else Color.RED.value
+                    print(f"    {color}{subkey}{Color.RESET.value}: {subval}")
                 print("\n")
             else:
                 print(f"    {val}")
@@ -141,13 +145,14 @@ class CLI:
             else ""
         )
         print(
-            f"""
+            f"""{Color.YELLOW.value}
                    _                      ___  _
     /'\\_/`\\       ( )_               _  /'___)( )_
     |     |   __  | ,_)   _ _   ___ (_)| (__  | ,_)
     | (_) | /'__`\\| |   /'_` )/',__)| || ,__) | |
     | | | |(  ___/| |_ ( (_| |\\__, \\| || |    | |_
     (_) (_)`\\____)`\\__)`\\__,_)(____/(_)(_)    `\\__)
+    {Color.RESET.value}
     {additional_text}
     """
         )
