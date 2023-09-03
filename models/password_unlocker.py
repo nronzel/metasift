@@ -3,6 +3,7 @@ import os
 from utils.cleanup_handler import CleanupHandler
 from utils.directory_handler import DirectoryHandler
 from utils.file_handler import FileHandler
+from utils.helpers import color_print
 from utils.settings_modifier import SettingsModifier
 
 
@@ -25,15 +26,10 @@ class PasswordUnlocker:
             return
 
         try:
-            print("\n- Unzipping file(s)..")
             FileHandler.unzip_files(self.doc, temp_dir)
-            print("- Removing found protections..")
             SettingsModifier.modify_settings(temp_dir)
-            print("- Creating new unlocked file..")
             FileHandler.zip_file(temp_dir, new_docx_filepath)
         finally:
-            print("- Cleaning up..")
             CleanupHandler.cleanup(temp_dir)
-            print("- Cleanup complete.")
 
-        print(f"\nUnlocked document can be found at {new_docx_filepath}")
+        color_print("cyan", f"\nUnlocked documents can be found at {new_docx_filepath}")

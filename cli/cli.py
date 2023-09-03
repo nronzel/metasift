@@ -4,16 +4,9 @@ from utils.helpers import is_supported_filetype, is_valid_filename
 from .menu_drawer import MenuDrawer
 from .input_handler import InputHandler
 from .document_action import DocumentAction
+from utils.ansi_colors import Color
 
 import os
-
-
-# ANSI colors for console output
-class Color(Enum):
-    RED = "\033[0;31m"
-    GREEN = "\033[0;32m"
-    YELLOW = "\033[0;33m"
-    RESET = "\033[0m"
 
 
 # State machine pattern used for future expansion of menu system.
@@ -81,7 +74,7 @@ class CLI:
             color = Color.GREEN.value if val else Color.RED.value
 
             if isinstance(val, dict):
-                print(f"{color}{key}{Color.RESET.value}:")
+                print(f"{Color.YELLOW.value}{key}{Color.RESET.value}:")
                 for subkey, subval in val.items():
                     color = Color.GREEN.value if subval else Color.RED.value
                     print(f"    {color}{subkey}{Color.RESET.value}: {subval}")

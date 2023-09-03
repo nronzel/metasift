@@ -1,5 +1,7 @@
 import re
 
+from utils.ansi_colors import Color
+
 
 def is_valid_filename(text):
     pattern = r".*\.[a-zA-Z]{3,4}$"
@@ -15,3 +17,16 @@ def is_supported_filetype(text):
     }
     text = text.strip().lower()
     return any(text.endswith(ext) for ext in supported_filetypes)
+
+
+def color_print(color, *args, **kwargs):
+    color = color.upper()
+    if color in Color._member_names_:
+        color_code = Color[color].value
+        reset_code = Color.RESET.value
+        formatted_text = " ".join(str(arg) for arg in args)
+        print(f"{color_code}{formatted_text}{reset_code}", **kwargs)
+    else:
+        print(
+            f"Invalid color specified. Available colors are {', '.join(Color._member_names_)}."
+        )
