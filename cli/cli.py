@@ -1,6 +1,6 @@
 from document.document import Document
 from enum import Enum, auto
-from utils.helpers import is_supported_filetype, is_valid_filename
+from utils.helpers import color_print, is_supported_filetype, is_valid_filename
 from .menu_drawer import MenuDrawer
 from .input_handler import InputHandler
 from .document_action import DocumentAction
@@ -67,17 +67,20 @@ class CLI:
 
     def _print_metadata(self, data):
         if data is None:
-            print("\nNo data supplied to metadata printer.")
+            color_print("red", "\nNo data supplied to metadata printer.")
             return
         print("\n")
         for key, val in data.items():
             color = Color.GREEN.value if val else Color.RED.value
 
+            for key, val in data.items():
+                color = "green" if val else "red"
+
             if isinstance(val, dict):
-                print(f"{Color.YELLOW.value}{key}{Color.RESET.value}:")
+                color_print("yellow", f"{key}:")
                 for subkey, subval in val.items():
-                    color = Color.GREEN.value if subval else Color.RED.value
-                    print(f"    {color}{subkey}{Color.RESET.value}: {subval}")
+                    sub_color = "green" if subval else "red"
+                    color_print(sub_color, f"    {subkey}: {subval}")
                 print("\n")
             else:
                 print(f"{color}{key}{Color.RESET.value}: {val}")
