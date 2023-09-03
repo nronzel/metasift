@@ -65,22 +65,6 @@ class MetadataExtractor(Extractor):
                     metadata[file] = self._extract_from_file(filepath)
         return metadata
 
-    # def _extract_metadata(self, file_path, namespaces):
-    #     metadata = {}
-    #     with zipfile.ZipFile(file_path, "r") as z:
-    #         if "docProps/core.xml" not in z.namelist():
-    #             raise Exception("core.xml not found")
-    #
-    #         with z.open("docProps/core.xml") as f:
-    #             tree = ET.parse(f)
-    #             root = tree.getroot()
-    #
-    #         for key, tag in namespaces.items():
-    #             item = root.find(tag, namespaces)
-    #             self._add_data_to_obj(item, key, metadata)
-    #
-    #     return metadata
-
     @staticmethod
     def _add_data_to_obj(item, name, metadata):
         if item is not None and item.text is not None:
