@@ -32,7 +32,6 @@ class MetadataExtractor(Extractor):
                 "ns2": "http://purl.org/dc/terms/",
             }
 
-            # Your original code for targeting specific metadata
             title = root.find("dc:title", ns)
             self._add_data_to_obj(title, "title", metadata)
 
