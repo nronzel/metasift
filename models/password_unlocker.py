@@ -27,7 +27,9 @@ class PasswordUnlocker:
 
         try:
             FileHandler.unzip_files(self.doc, temp_dir)
-            SettingsModifier.modify_settings(temp_dir)
+            if not SettingsModifier.modify_settings(temp_dir):
+                color_print("cyan", "No protection found! No action required.")
+                return
             FileHandler.zip_file(temp_dir, new_docx_filepath)
         finally:
             CleanupHandler.cleanup(temp_dir)

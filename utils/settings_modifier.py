@@ -19,7 +19,9 @@ class SettingsModifier:
                 root.remove(doc_protection)
                 tree.write(settings_path)
                 color_print("green", "Protection removal -- SUCCESS!")
-            return True
+                return True
+            else:
+                return False
         except Exception as e:
             color_print("red", f"Protection removal -- FAILED!.\nError: {e}")
             return False
