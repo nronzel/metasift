@@ -1,6 +1,9 @@
 from document.document import Document
 from enum import Enum, auto
 from utils.helpers import is_supported_filetype, is_valid_filename
+from .menu_drawer import MenuDrawer
+from .input_handler import InputHandler
+from .document_action import DocumentAction
 
 import os
 
@@ -17,35 +20,9 @@ class CLI:
     def __init__(self):
         self.document = None
         self.state = State.MAIN_MENU
-        self.action = None
-
-    def _draw_menu(self, title, options):
-        max_len = max(
-            len(f"{key}. {val['text']}") for key, val in options.items()
-        )  # Calculate max length based on key and value
-        border_line = "+" + "-" * (max_len + 4) + "+"
-
-        print("\n" + border_line)
-        print(f"|  {title.center(max_len)}  |")
-        print("|" + " " * (max_len + 4) + "|")
-
-        for key, val in options.items():
-            menu_item = f"{key}. {val['text']}"
-            print(f"|  {menu_item.ljust(max_len)}  |")
-
-        print("|" + " " * (max_len + 4) + "|")
-        print(f"|  {'q. Quit'.ljust(max_len)}  |")
-        print(border_line + "\n")
-
-    def _handle_choice(self, options):
-        choice = input("Make a selection: ")
-        action = options.get(choice, {}).get("action")
-        if action:
-            action()
-        elif choice == "q":
-            self._quit()
-        else:
-            print(f"\n{choice} is not a valid option")
+        self.menu_drawer = MenuDrawer()
+        self.input_handler = InputHandler()
+        self.document_action = None
 
     def _draw_main_menu(self):
         self.state = State.MAIN_MENU
@@ -60,29 +37,28 @@ class CLI:
                 "action": self._unlock_docx,
             },
         }
-        self._draw_menu("Main Menu", options)
-        self._handle_choice(options)
+        self.menu_drawer.draw_menu("Main Menu", options)
+        action, should_quit = self.input_handler.get_choice(options)
+        if should_quit:
+            self._quit()
+        elif action:
+            action()
+        else:
+            print("\nInvalid option, try again.")
 
     def _extract_metadata(self):
-        self._clear_console()
         self._get_and_check_input()
-        if self.document is not None:
-            data = self.document.extract_metadata()
-            self._print_metadata(data)
-            return data
-        else:
-            print("\nError: document is None")
+        self.document_action = DocumentAction(self.document)
+        data = self.document_action.extract_metadata()
+        self._print_metadata(data)
 
     def _clean_metadata(self):
         pass
 
     def _unlock_docx(self):
-        self._clear_console()
         self._get_and_check_input()
-        if self.document is not None:
-            self.document.remove_password()
-        else:
-            print("\nError: document is None")
+        self.document_action = DocumentAction(self.document)
+        self.document_action.remove_password()
 
     def _print_metadata(self, data):
         if data is None:
