@@ -8,7 +8,7 @@ class FileHandler:
     @staticmethod
     def unzip_files(src, dest):
         try:
-            color_print("yellow", "\nUnzipping file...")
+            color_print("yellow", f"\nUnzipping file '{src.split('/')[-1]}'...")
             with zipfile.ZipFile(src, "r") as zip_ref:
                 zip_ref.extractall(dest)
             color_print("green", "Unzip file -- SUCCESS!")
