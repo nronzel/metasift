@@ -22,11 +22,9 @@ class InputHandler:
 
         if is_file and is_supported_filetype(path):
             document = Document(path)
-            document.set_type("filename")
             return document
         if is_valid_directory:
             document = Document(path)
-            document.set_type("directory")
             return document
 
         color_print("red", "\nInvalid or unsupported file provided. Try again.\n")
