@@ -43,13 +43,14 @@ class DOCXMetadataExtractor(Extractor):
         return metadata
 
     def _extract_from_directory(self):
-        metadata = {}
         # Walks subdirectories -- for future use
         # for root, _, files in os.walk(self.path):
         #     for file in files:
         #         if file.endswith(".docx"):
         #             filepath = os.path.join(root, file)
         #             metadata[file] = self._extract_from_file(filepath)
+
+        metadata = {}
         search_path = os.path.join(self.path, "*.docx")
         filepaths = glob.glob(search_path)
         color_print("cyan", f"\nSUPPORTED FILES LOCATED: {len(filepaths)}")
