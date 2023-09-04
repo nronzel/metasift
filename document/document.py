@@ -5,7 +5,6 @@ from models.password_unlocker import PasswordUnlocker
 class Document:
     def __init__(self, path):
         self.path = path
-        self.type = None
         self.metadata_extractor = DOCXMetadataExtractor(self.path)
         self.password_unlocker = PasswordUnlocker(self.path)
 
@@ -17,6 +16,3 @@ class Document:
 
     def remove_password(self):
         return self.password_unlocker.unlock()
-
-    def set_type(self, type):
-        self.type = type
