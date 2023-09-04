@@ -1,10 +1,9 @@
 from document.document import Document
 from enum import Enum, auto
-from utils.helpers import color_print, is_supported_filetype, is_valid_filename
+from utils.helpers import color_print
 from .menu_drawer import MenuDrawer
 from .input_handler import InputHandler
 from .document_action import DocumentAction
-from utils.ansi_colors import Color
 
 import os
 
@@ -132,15 +131,13 @@ class CLI:
             if intro
             else ""
         )
-        print(
-            f"""{Color.YELLOW.value}
+        ascii_art = f"""
                    _                      ___  _
     /'\\_/`\\       ( )_               _  /'___)( )_
     |     |   __  | ,_)   _ _   ___ (_)| (__  | ,_)
     | (_) | /'__`\\| |   /'_` )/',__)| || ,__) | |
     | | | |(  ___/| |_ ( (_| |\\__, \\| || |    | |_
     (_) (_)`\\____)`\\__)`\\__,_)(____/(_)(_)    `\\__)
-    {Color.RESET.value}
-    {additional_text}
     """
-        )
+        complete_text = ascii_art + additional_text
+        color_print("yellow", complete_text)
