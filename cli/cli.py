@@ -70,11 +70,9 @@ class CLI:
             color_print("red", "\nNo data supplied to metadata printer.")
             return
         print("\n")
-        for key, val in data.items():
-            color = Color.GREEN.value if val else Color.RED.value
 
-            for key, val in data.items():
-                color = "green" if val else "red"
+        for key, val in data.items():
+            color = "green" if val else "red"
 
             if isinstance(val, dict):
                 color_print("yellow", f"{key}:")
