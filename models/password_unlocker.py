@@ -21,6 +21,8 @@ class PasswordUnlocker:
             return self._batch_unlock()
         elif os.path.isfile(self.path):
             return self._unlock_file()
+        else:
+            color_print("red", "\nInvalid path or filename provided. Try again.")
 
     def _unlock_file(self):
         temp_dir = "temp_docx"
