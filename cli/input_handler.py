@@ -19,14 +19,14 @@ class InputHandler:
         is_file = is_valid_filename(path)
         is_valid_directory = os.path.isdir(path)
 
-        if is_file and is_supported_filetype:
+        if is_file and is_supported_filetype(path):
             document = Document(path)
             document.set_type("filename")
             return document
-        elif is_valid_directory:
+        if is_valid_directory:
             document = Document(path)
             document.set_type("directory")
             return document
-        else:
-            color_print("red", "\nInvalid or unsupported file provided. Try again.\n")
-            return None
+
+        color_print("red", "\nInvalid or unsupported file provided. Try again.\n")
+        return None
