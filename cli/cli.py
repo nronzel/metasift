@@ -81,27 +81,20 @@ class CLI:
                     color_print(sub_color, f"    {subkey}: {subval}")
                 print("\n")
             else:
-                print(f"{color}{key}{Color.RESET.value}: {val}")
+                color_print(color, f"{key}: {val}")
 
     def _get_and_check_input(self):
         while True:
-            path = input("Please provide a path or a filename: ")
+            path = self.input_handler.get_file("Please provide a path or a filename: ")
+
             if path.lower() in ["exit", "quit", "q"]:
                 self._quit()
 
-            is_file = is_valid_filename(path)
-            is_valid_directory = os.path.isdir(path)
+            document = self.input_handler.validate_and_create_document(path)
 
-            if is_file and is_supported_filetype(path):
-                self.document = Document(path)
-                self.document.set_type("filename")
+            if document:
+                self.document = document
                 break
-            elif is_valid_directory:
-                self.document = Document(path)
-                self.document.set_type("directory")
-                break
-            else:
-                print("\nInvalid or unsupported file provided. Try again.\n")
 
     def _quit(self):
         self._clear_console()
