@@ -1,4 +1,5 @@
 import os
+import glob
 
 from utils.file_handler import FileHandler
 from utils.helpers import color_print
@@ -49,10 +50,9 @@ class DOCXMetadataExtractor(Extractor):
         #         if file.endswith(".docx"):
         #             filepath = os.path.join(root, file)
         #             metadata[file] = self._extract_from_file(filepath)
-        for file in os.listdir(self.path):
-            if file.endswith(".docx"):
-                filepath = os.path.join(self.path, file)
-                metadata[file] = self._extract_from_file(filepath)
+        for filepath in glob.glob(f"{self.path}/*.docx"):
+            file = os.path.basename(filepath)
+            metadata[file] = self._extract_from_file(filepath)
 
         if not metadata:
             color_print(
