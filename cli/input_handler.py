@@ -15,7 +15,8 @@ class InputHandler:
     def get_file(self, prompt):
         return input(prompt)
 
-    def validate_and_create_document(self, path):
+    @staticmethod
+    def validate_and_create_document(path):
         is_file = is_valid_filename(path)
         is_valid_directory = os.path.isdir(path)
 
