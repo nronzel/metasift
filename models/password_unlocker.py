@@ -44,7 +44,9 @@ class PasswordUnlocker:
         finally:
             CleanupHandler.cleanup(temp_dir)
 
-        color_print("cyan", f"\nUnlocked documents can be found at {new_docx_filepath}\n")
+        color_print(
+            "cyan", f"\nUnlocked documents can be found at {new_docx_filepath}\n"
+        )
 
     def _batch_unlock(self):
         # find all .docx files and add to list
