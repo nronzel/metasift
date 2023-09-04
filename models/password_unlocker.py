@@ -1,4 +1,5 @@
 import os
+import glob
 
 from utils.cleanup_handler import CleanupHandler
 from utils.directory_handler import DirectoryHandler
@@ -12,13 +13,19 @@ class PasswordUnlocker:
     Removes password protection from .docx files.
     """
 
-    def __init__(self, doc):
-        self.doc = doc
+    def __init__(self, path):
+        self.path = path
 
     def unlock(self):
+        if os.path.isdir(self.path):
+            return self._batch_unlock()
+        elif os.path.isfile(self.path):
+            return self._unlock_file()
+
+    def _unlock_file(self):
         temp_dir = "temp_docx"
         output_dir = "unlocked-documents"
-        new_docx_file = "unlocked_" + self.doc.split(os.path.sep)[-1]
+        new_docx_file = "unlocked_" + self.path.split(os.path.sep)[-1]
         new_docx_filepath = os.path.join(output_dir, new_docx_file)
 
         if not DirectoryHandler.ensure_directory_exists(output_dir):
@@ -26,7 +33,7 @@ class PasswordUnlocker:
             return
 
         try:
-            FileHandler.unzip_files(self.doc, temp_dir)
+            FileHandler.unzip_files(self.path, temp_dir)
             if not SettingsModifier.modify_settings(temp_dir):
                 color_print("cyan", "No protection found! No action required.")
                 return
@@ -35,3 +42,15 @@ class PasswordUnlocker:
             CleanupHandler.cleanup(temp_dir)
 
         color_print("cyan", f"\nUnlocked documents can be found at {new_docx_filepath}")
+
+    def _batch_unlock(self):
+        # find all .docx files and add to list
+        docx_files = glob.glob(os.path.join(self.path, "*.docx"))
+
+        if not docx_files:
+            color_print("red", "\nNo .docx files found in the directory. Try again.\n")
+            return
+
+        for docx_file in docx_files:
+            self.path = docx_file
+            self.unlock()
