@@ -1,6 +1,7 @@
 import os
 
 from utils.file_handler import FileHandler
+from utils.helpers import color_print
 from utils.xml_extractor import XMLExtractor
 from .extractor import Extractor
 
@@ -42,9 +43,19 @@ class DOCXMetadataExtractor(Extractor):
 
     def _extract_from_directory(self):
         metadata = {}
-        for root, _, files in os.walk(self.path):
-            for file in files:
-                if file.endswith(".docx"):
-                    filepath = os.path.join(root, file)
-                    metadata[file] = self._extract_from_file(filepath)
+        # Walks subdirectories -- for future use
+        # for root, _, files in os.walk(self.path):
+        #     for file in files:
+        #         if file.endswith(".docx"):
+        #             filepath = os.path.join(root, file)
+        #             metadata[file] = self._extract_from_file(filepath)
+        for file in os.listdir(self.path):
+            if file.endswith(".docx"):
+                filepath = os.path.join(self.path, file)
+                metadata[file] = self._extract_from_file(filepath)
+
+        if not metadata:
+            color_print(
+                "red", "\nNo .docx files found in supplied directory. Try again."
+            )
         return metadata
