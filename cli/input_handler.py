@@ -27,5 +27,5 @@ class InputHandler:
             document = Document(path)
             return document
 
-        color_print("red", "\nInvalid or unsupported file provided. Try again.\n")
+        color_print("red", "\nInvalid/unsupported file or path provided. Try again.\n")
         return None
