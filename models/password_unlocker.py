@@ -35,6 +35,7 @@ class PasswordUnlocker:
             return
 
         try:
+            color_print("yellow", f"{('-') * 40}")
             FileHandler.unzip_files(self.path, temp_dir)
             if not SettingsModifier.modify_settings(temp_dir):
                 color_print("cyan", "No protection found! No action required.")
@@ -43,7 +44,7 @@ class PasswordUnlocker:
         finally:
             CleanupHandler.cleanup(temp_dir)
 
-        color_print("cyan", f"\nUnlocked documents can be found at {new_docx_filepath}")
+        color_print("cyan", f"\nUnlocked documents can be found at {new_docx_filepath}\n")
 
     def _batch_unlock(self):
         # find all .docx files and add to list
