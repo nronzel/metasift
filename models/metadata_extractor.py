@@ -3,7 +3,7 @@ import glob
 
 from utils.file_handler import FileHandler
 from utils.helpers import color_print
-from utils.xml_extractor import XMLExtractor
+from .xml_extractor import XMLExtractor
 from .extractor import Extractor
 
 
