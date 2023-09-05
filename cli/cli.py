@@ -66,7 +66,6 @@ class CLI:
 
     def _print_metadata(self, data):
         if data is None:
-            color_print("red", "\nNo data supplied to metadata printer.")
             return
         print("\n")
 
@@ -89,7 +88,7 @@ class CLI:
             if path.lower() in ["exit", "quit", "q"]:
                 self._quit()
 
-            document = self.input_handler.validate_and_create_document(path)
+            document = Document(path)
 
             if document:
                 self.document = document

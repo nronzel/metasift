@@ -1,4 +1,5 @@
 import re
+import os
 
 from utils.ansi_colors import Color
 
@@ -17,6 +18,16 @@ def is_supported_filetype(text):
     }
     text = text.strip().lower()
     return any(text.endswith(ext) for ext in supported_filetypes)
+
+
+def check_path_type(path):
+    is_file = os.path.isfile(path) and is_supported_filetype(path)
+    is_directory = os.path.isdir(path)
+    if is_file:
+        return "file"
+    if is_directory:
+        return "directory"
+    return "invalid"
 
 
 def color_print(color, *args, **kwargs):

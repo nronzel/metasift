@@ -11,13 +11,7 @@ class DOCXMetadataExtractor(Extractor):
     def __init__(self, path):
         self.path = path
 
-    def extract(self):
-        if os.path.isdir(self.path):
-            return self._extract_from_directory()
-        elif os.path.isfile(self.path):
-            return self._extract_from_file(self.path)
-
-    def _extract_from_file(self, file_path):
+    def extract(self, file_path):
         metadata = {}
         xml_data = FileHandler.read_zip_file(file_path, "docProps/core.xml")
 
@@ -42,13 +36,16 @@ class DOCXMetadataExtractor(Extractor):
 
         return metadata
 
-    def _extract_from_directory(self):
+    def batch_extract(self):
         # Walks subdirectories -- for future use
         # for root, _, files in os.walk(self.path):
         #     for file in files:
         #         if file.endswith(".docx"):
         #             filepath = os.path.join(root, file)
         #             metadata[file] = self._extract_from_file(filepath)
+        if not os.path.isdir(self.path):
+            color_print("red", "Supplied path is not a valid directory, try again.")
+            return
 
         metadata = {}
         search_path = os.path.join(self.path, "*.docx")
@@ -56,7 +53,7 @@ class DOCXMetadataExtractor(Extractor):
         color_print("cyan", f"\nSUPPORTED FILES LOCATED: {len(filepaths)}")
         for filepath in filepaths:
             file = os.path.basename(filepath)
-            metadata[file] = self._extract_from_file(filepath)
+            metadata[file] = self.extract(filepath)
 
         if not metadata:
             color_print(
