@@ -51,7 +51,7 @@ class CLI:
             print("\nInvalid option, try again.")
 
     def _extract_metadata(self):
-        self._get_and_check_input()
+        self._get_input()
         self.document_action = DocumentAction(self.document)
         data = self.document_action.extract_metadata()
         self._print_metadata(data)
@@ -60,13 +60,14 @@ class CLI:
         pass
 
     def _unlock_docx(self):
-        self._get_and_check_input()
+        self._get_input()
         self.document_action = DocumentAction(self.document)
         self.document_action.remove_password()
 
     def _print_metadata(self, data):
         if data is None:
             return
+
         print("\n")
 
         for key, val in data.items():
@@ -81,11 +82,11 @@ class CLI:
             else:
                 color_print(color, f"{key}: {val}")
 
-    def _get_and_check_input(self):
+    def _get_input(self):
         while True:
-            path = self.input_handler.get_file("Please provide a path or a filename: ")
+            path = self.input_handler.get_path()
 
-            if path.lower() in ["exit", "quit", "q"]:
+            if path is None:
                 self._quit()
 
             document = Document(path)

@@ -6,5 +6,10 @@ class InputHandler:
             return None, True
         return options.get(choice, {}).get("action"), False
 
-    def get_file(self, prompt):
-        return input(prompt)
+    def get_path(self):
+        path = input("Please provide a path or a filename: ")
+
+        if path.lower() in ["exit", "quit", "q"]:
+            return None
+
+        return path
