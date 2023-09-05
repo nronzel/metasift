@@ -37,7 +37,7 @@ class CLI:
                 "action": self._clean_metadata,
             },
             "3": {
-                "text": "Remove password protection (.docx only)",
+                "text": "Remove password protection(.docx)",
                 "action": self._unlock_docx,
             },
         }
