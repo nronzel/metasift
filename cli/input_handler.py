@@ -20,10 +20,7 @@ class InputHandler:
         is_file = is_valid_filename(path)
         is_valid_directory = os.path.isdir(path)
 
-        if is_file and is_supported_filetype(path):
-            document = Document(path)
-            return document
-        if is_valid_directory:
+        if is_file and is_supported_filetype(path) or is_valid_directory:
             document = Document(path)
             return document
 
