@@ -37,12 +37,6 @@ class DOCXMetadataExtractor(Extractor):
         return metadata
 
     def batch_extract(self):
-        # Walks subdirectories -- for future use
-        # for root, _, files in os.walk(self.path):
-        #     for file in files:
-        #         if file.endswith(".docx"):
-        #             filepath = os.path.join(root, file)
-        #             metadata[file] = self._extract_from_file(filepath)
         if not os.path.isdir(self.path):
             color_print("red", "Supplied path is not a valid directory, try again.")
             return
