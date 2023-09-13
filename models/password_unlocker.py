@@ -1,5 +1,4 @@
 import os
-import glob
 
 from utils.cleanup_handler import CleanupHandler
 from utils.directory_handler import DirectoryHandler
