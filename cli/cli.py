@@ -3,7 +3,6 @@ from enum import Enum, auto
 from utils.helpers import color_print
 from .menu_drawer import MenuDrawer
 from .input_handler import InputHandler
-from .document_action import DocumentAction
 
 import os
 
@@ -26,7 +25,6 @@ class CLI:
         }
         self.menu_drawer = MenuDrawer()
         self.input_handler = InputHandler()
-        self.document_action = None
 
     def _handle_main_menu_state(self):
         self.state = State.MAIN_MENU
@@ -52,17 +50,17 @@ class CLI:
 
     def _extract_metadata(self):
         self._get_input()
-        self.document_action = DocumentAction(self.document)
-        data = self.document_action.extract_metadata()
-        self._print_metadata(data)
+        if self.document is not None:
+            data = self.document.extract_metadata()
+            self._print_metadata(data)
 
     def _clean_metadata(self):
         pass
 
     def _unlock_docx(self):
         self._get_input()
-        self.document_action = DocumentAction(self.document)
-        self.document_action.remove_password()
+        if self.document is not None:
+            self.document.remove_password()
 
     def _print_metadata(self, data):
         if data is None:
@@ -70,17 +68,14 @@ class CLI:
 
         print("\n")
 
-        for key, val in data.items():
-            color = "green" if val else "red"
-
-            if isinstance(val, dict):
-                color_print("yellow", f"{key}:")
-                for subkey, subval in val.items():
-                    sub_color = "green" if subval else "red"
-                    color_print(sub_color, f"    {subkey}: {subval}")
-                print("\n")
-            else:
+        for dict in data:
+            for key, val in dict.items():
+                if key == "file":
+                    color_print("yellow", f"\n{val}\n")
+                    continue
+                color = "green" if val else "red"
                 color_print(color, f"{key}: {val}")
+            print("-" * 40)  # Print a separator between dictionaries
 
     def _get_input(self):
         while True:
@@ -89,7 +84,9 @@ class CLI:
             if path is None:
                 self._quit()
 
-            document = Document(path)
+            files = self.input_handler.analyze(path)
+
+            document = Document(files)
 
             if document:
                 self.document = document
