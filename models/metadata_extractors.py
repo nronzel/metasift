@@ -4,16 +4,37 @@ import glob
 from utils.file_handler import FileHandler
 from utils.helpers import color_print
 from .xml_extractor import XMLExtractor
-from .extractor import Extractor
 
 
-class DOCXMetadataExtractor(Extractor):
-    def __init__(self, path):
-        self.path = path
+class MetadataExtractor:
+    def __init__(self, files):
+        self.files = files
+        self.docx_extractor = DOCXMetadataExtractor()
+
+    def extract(self):
+        metadata = []
+
+        if self.files is None:
+            color_print("red", "\nNo files for extractor to parse.\n")
+
+        for file in self.files:
+            _, extension = os.path.splitext(file)
+            match extension:
+                case ".docx":
+                    metadata.append(self.docx_extractor.extract(file))
+                case _:
+                    color_print("red", "\nNo supported files found to extract.\n")
+
+        return metadata
+
+
+class DOCXMetadataExtractor(MetadataExtractor):
+    def __init__(self):
+        self.file_handler = FileHandler()
 
     def extract(self, file_path):
         metadata = {}
-        xml_data = FileHandler.read_zip_file(file_path, "docProps/core.xml")
+        xml_data = self.file_handler.read_zip_file(file_path, "docProps/core.xml")
 
         if xml_data is None:
             return metadata
@@ -26,6 +47,7 @@ class DOCXMetadataExtractor(Extractor):
 
         extractor = XMLExtractor(xml_data, namespaces)
 
+        metadata["file"] = file_path.split("/")[-1]
         metadata["title"] = extractor.extract_value("dc:title")
         metadata["creator"] = extractor.extract_value("dc:creator")
         metadata["keywords"] = extractor.extract_value("ns0:keywords")
@@ -34,23 +56,4 @@ class DOCXMetadataExtractor(Extractor):
         metadata["created"] = extractor.extract_value("ns2:created")
         metadata["modified"] = extractor.extract_value("ns2:modified")
 
-        return metadata
-
-    def batch_extract(self):
-        if not os.path.isdir(self.path):
-            color_print("red", "Supplied path is not a valid directory, try again.")
-            return
-
-        metadata = {}
-        search_path = os.path.join(self.path, "*.docx")
-        filepaths = glob.glob(search_path)
-        color_print("cyan", f"\nSUPPORTED FILES LOCATED: {len(filepaths)}")
-        for filepath in filepaths:
-            file = os.path.basename(filepath)
-            metadata[file] = self.extract(filepath)
-
-        if not metadata:
-            color_print(
-                "red", "\nNo .docx files found in supplied directory. Try again."
-            )
         return metadata
