@@ -1,12 +1,13 @@
 import os
 
-from .helpers import color_print, is_supported_filetype
+from .helpers import color_print
 
 
-# To be used at a future point when more filetypes are supported
 class FileCrawler:
-    @staticmethod
-    def crawl_for_supported_files(directory):
+    def __init__(self, supported_types):
+        self.supported_types = supported_types
+
+    def crawl(self, directory):
         supported_files = []
         directory = os.path.abspath(directory)
 
@@ -16,7 +17,8 @@ class FileCrawler:
         color_print("yellow", "\nSearching for supported files...")
         for filename in os.listdir(directory):
             filepath = os.path.join(directory, filename)
-            if os.path.isfile(filepath) and is_supported_filetype(filename):
+            _, extension = os.path.splitext(filename)
+            if os.path.isfile(filepath) and extension in self.supported_types:
                 supported_files.append(filepath)
                 color_print("green", f"FOUND -> {filename}")
 
