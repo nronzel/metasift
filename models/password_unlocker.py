@@ -38,5 +38,5 @@ class PasswordUnlocker:
                 CleanupHandler.cleanup(temp_dir)
 
             color_print(
-                "cyan", f"\nUnlocked documents can be found at {new_docx_filepath}\n"
+                "cyan", f"\nUnlocked document can be found at {new_docx_filepath}\n"
             )
