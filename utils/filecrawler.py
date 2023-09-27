@@ -22,4 +22,7 @@ class FileCrawler:
                 supported_files.append(filepath)
                 color_print("green", f"FOUND -> {filename}")
 
+        if not supported_files:
+            color_print("red", "\nNo supported files found. Try again.\n")
+
         return supported_files
