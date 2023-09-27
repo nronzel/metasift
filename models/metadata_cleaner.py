@@ -1,6 +1,3 @@
-import os
-
-
 class Cleaner:
     def clean(self):
         raise NotImplementedError
