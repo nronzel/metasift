@@ -5,7 +5,12 @@ from utils.helpers import color_print
 from .xml_extractor import XMLExtractor
 
 
-class MetadataExtractor:
+class Extractor:
+    def extract(self):
+        raise NotImplementedError
+
+
+class MetadataExtractor(Extractor):
     def __init__(self, files):
         self.files = files
         self.docx_extractor = DOCXMetadataExtractor()
@@ -27,7 +32,7 @@ class MetadataExtractor:
         return metadata
 
 
-class DOCXMetadataExtractor(MetadataExtractor):
+class DOCXMetadataExtractor(Extractor):
     def __init__(self):
         self.file_handler = FileHandler()
 
